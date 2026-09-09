@@ -54,7 +54,7 @@ def setup_mock_client_db():
         sys.exit(1)
 
 def setup_destination_db():
-    """Sets up the destination database table."""
+    """Sets up the destination database tables."""
     try:
         with sqlite3.connect(DEST_DB) as conn:
             cursor = conn.cursor()
@@ -67,54 +67,73 @@ def setup_destination_db():
                     status TEXT
                 )
             ''')
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS imported_customers (
+                    id INTEGER PRIMARY KEY,
+                    name TEXT,
+                    email TEXT,
+                    signup_date TEXT,
+                    risk_score REAL
+                )
+            ''')
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS imported_chargebacks (
+                    id INTEGER PRIMARY KEY,
+                    transaction_id INTEGER,
+                    chargeback_date TEXT,
+                    reason TEXT
+                )
+            ''')
             conn.commit()
             logger.info("Destination database setup completed.")
     except sqlite3.Error as e:
         logger.error(f"Error setting up destination database: {e}")
         sys.exit(1)
 
-def fetch_records(db_path: str) -> List[Dict[str, Any]]:
-    """Fetches records from the specified database."""
-    logger.info(f"Fetching records from {db_path}...")
+def fetch_records(db_path: str, table_name: str) -> List[Dict[str, Any]]:
+    """Fetches records from the specified database table."""
+    logger.info(f"Fetching records from {db_path} ({table_name})...")
     records = []
     try:
         # Using a context manager for database connection
         with sqlite3.connect(db_path) as conn:
             conn.row_factory = sqlite3.Row  # To get dict-like rows
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM transactions')
+            cursor.execute(f'SELECT * FROM {table_name}')
             rows = cursor.fetchall()
             
             # Using list comprehension to convert to standard dictionaries
             records = [dict(row) for row in rows]
-            logger.info(f"Successfully fetched {len(records)} records.")
+            logger.info(f"Successfully fetched {len(records)} records from {table_name}.")
             return records
     except sqlite3.Error as e:
-        logger.error(f"Database error while fetching records: {e}")
+        logger.error(f"Database error while fetching records from {table_name}: {e}")
         raise
 
-def write_records(db_path: str, records: List[Dict[str, Any]]):
-    """Writes a list of records to the destination database."""
+def write_records(db_path: str, table_name: str, records: List[Dict[str, Any]]):
+    """Writes a list of records to the destination database table."""
     if not records:
-        logger.warning("No records to write.")
+        logger.warning(f"No records to write for {table_name}.")
         return
 
-    logger.info(f"Writing {len(records)} records to {db_path}...")
+    logger.info(f"Writing {len(records)} records to {db_path} ({table_name})...")
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
             
-            # Use executemany for bulk insert
-            # Using REPLACE to handle potential duplicates on repeated runs
-            insert_query = '''
-                INSERT OR REPLACE INTO imported_transactions (id, customer_id, amount, date, status)
-                VALUES (:id, :customer_id, :amount, :date, :status)
+            # Dynamically build the insert query
+            columns = ', '.join(records[0].keys())
+            placeholders = ', '.join([':' + key for key in records[0].keys()])
+            
+            insert_query = f'''
+                INSERT OR REPLACE INTO {table_name} ({columns})
+                VALUES ({placeholders})
             '''
             cursor.executemany(insert_query, records)
             conn.commit()
-            logger.info("Records written successfully.")
+            logger.info(f"Records written successfully to {table_name}.")
     except sqlite3.Error as e:
-        logger.error(f"Database error while writing records: {e}")
+        logger.error(f"Database error while writing records to {table_name}: {e}")
         raise
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
@@ -128,11 +147,16 @@ def main():
     setup_destination_db()
     
     try:
-        # 2. Extract
-        records = fetch_records(CLIENT_DB)
+        # 2. Extract and Load for each table
+        tables_to_sync = {
+            'transactions': 'imported_transactions',
+            'customers': 'imported_customers',
+            'chargebacks': 'imported_chargebacks'
+        }
         
-        # 3. Load
-        write_records(DEST_DB, records)
+        for source_table, dest_table in tables_to_sync.items():
+            records = fetch_records(CLIENT_DB, source_table)
+            write_records(DEST_DB, dest_table, records)
         
         logger.info("Pipeline executed successfully.")
         

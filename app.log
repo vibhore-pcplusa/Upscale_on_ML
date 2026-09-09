@@ -32,3 +32,5 @@ INFO - {'id': 4, 'customer_id': 103, 'amount': 75.25, 'date': '2023-10-03', 'sta
 INFO - {'id': 5, 'customer_id': 104, 'amount': 500.75, 'date': '2023-10-04', 'status': 'COMPLETED'}
 INFO - {'id': 6, 'customer_id': 104, 'amount': 500.75, 'date': '2023-10-04', 'status': 'COMPLETED'}
 INFO - ---------------------------
+2026-09-09 21:03:41,746 - INFO - Setting up customers and chargebacks tables.
+2026-09-09 21:03:41,749 - INFO - Successfully created tables and inserted mock data for customers and chargebacks.
