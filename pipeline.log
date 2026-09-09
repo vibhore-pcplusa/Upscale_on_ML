@@ -1,0 +1,8 @@
+2026-09-09 20:38:41,057 - INFO - Starting pipeline execution.
+2026-09-09 20:38:41,057 - INFO - Mock client database client_db.sqlite already exists.
+2026-09-09 20:38:41,061 - INFO - Destination database setup completed.
+2026-09-09 20:38:41,061 - INFO - Fetching records from client_db.sqlite...
+2026-09-09 20:38:41,062 - INFO - Successfully fetched 6 records.
+2026-09-09 20:38:41,062 - INFO - Writing 6 records to destination_db.sqlite...
+2026-09-09 20:38:41,063 - INFO - Records written successfully.
+2026-09-09 20:38:41,063 - INFO - Pipeline executed successfully.

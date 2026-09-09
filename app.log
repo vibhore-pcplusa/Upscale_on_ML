@@ -1,0 +1,34 @@
+INFO - 1. Initial Data:
+INFO - --- Current Records (5) ---
+INFO - {'id': 1, 'customer_id': 101, 'amount': 250.5, 'date': '2023-10-01', 'status': 'COMPLETED'}
+INFO - {'id': 2, 'customer_id': 102, 'amount': 15.0, 'date': '2023-10-02', 'status': 'COMPLETED'}
+INFO - {'id': 3, 'customer_id': 101, 'amount': 1200.0, 'date': '2023-10-02', 'status': 'FAILED'}
+INFO - {'id': 4, 'customer_id': 103, 'amount': 75.25, 'date': '2023-10-03', 'status': 'COMPLETED'}
+INFO - {'id': 5, 'customer_id': 104, 'amount': 500.75, 'date': '2023-10-04', 'status': 'COMPLETED'}
+INFO - ---------------------------
+INFO - 
+2. Creating a new record:
+INFO - Created new record with ID: 6
+INFO - 
+3. Data after Creation:
+INFO - --- Current Records (6) ---
+INFO - {'id': 1, 'customer_id': 101, 'amount': 250.5, 'date': '2023-10-01', 'status': 'COMPLETED'}
+INFO - {'id': 2, 'customer_id': 102, 'amount': 15.0, 'date': '2023-10-02', 'status': 'COMPLETED'}
+INFO - {'id': 3, 'customer_id': 101, 'amount': 1200.0, 'date': '2023-10-02', 'status': 'FAILED'}
+INFO - {'id': 4, 'customer_id': 103, 'amount': 75.25, 'date': '2023-10-03', 'status': 'COMPLETED'}
+INFO - {'id': 5, 'customer_id': 104, 'amount': 500.75, 'date': '2023-10-04', 'status': 'COMPLETED'}
+INFO - {'id': 6, 'customer_id': 104, 'amount': 500.75, 'date': '2023-10-04', 'status': 'PENDING'}
+INFO - ---------------------------
+INFO - 
+4. Updating the new record:
+INFO - Successfully updated transaction ID 6 to COMPLETED
+INFO - 
+5. Data after Update:
+INFO - --- Current Records (6) ---
+INFO - {'id': 1, 'customer_id': 101, 'amount': 250.5, 'date': '2023-10-01', 'status': 'COMPLETED'}
+INFO - {'id': 2, 'customer_id': 102, 'amount': 15.0, 'date': '2023-10-02', 'status': 'COMPLETED'}
+INFO - {'id': 3, 'customer_id': 101, 'amount': 1200.0, 'date': '2023-10-02', 'status': 'FAILED'}
+INFO - {'id': 4, 'customer_id': 103, 'amount': 75.25, 'date': '2023-10-03', 'status': 'COMPLETED'}
+INFO - {'id': 5, 'customer_id': 104, 'amount': 500.75, 'date': '2023-10-04', 'status': 'COMPLETED'}
+INFO - {'id': 6, 'customer_id': 104, 'amount': 500.75, 'date': '2023-10-04', 'status': 'COMPLETED'}
+INFO - ---------------------------
