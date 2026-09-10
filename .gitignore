@@ -1,0 +1,20 @@
+# Environments
+venv/
+env/
+.env
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+
+# Databases (If you decide to ignore them in the future)
+# *.sqlite
+# *.db
+
+# IDEs
+.vscode/
+.idea/
