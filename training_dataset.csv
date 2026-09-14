@@ -1,0 +1,10 @@
+transaction_id,transaction_amount,customer_risk_score,days_since_signup,previous_transaction_count,is_fraud
+1,250.5,0.1,259,0,0
+3,1200.0,0.1,260,1,1
+2,15.0,0.2,224,0,0
+4,75.25,0.05,212,0,0
+5,500.75,0.8,177,0,0
+6,500.75,0.8,177,1,1
+7,,0.1,268,2,0
+8,,0.1,268,3,0
+9,850.0,0.5,6,0,0
