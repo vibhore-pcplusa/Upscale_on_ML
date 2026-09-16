@@ -82,6 +82,19 @@ def evolve_schema(dest_table: str, source_record: Dict[str, Any]):
         cursor.execute(f"PRAGMA table_info({dest_table})")
         existing_columns = {row[1] for row in cursor.fetchall()}
     
+    if not existing_columns:
+        # Table doesn't exist yet! Create it dynamically.
+        cols = []
+        for col in source_record.keys():
+            if col == 'id':
+                cols.append(f"{col} INTEGER PRIMARY KEY")
+            else:
+                cols.append(f"{col} TEXT")
+        create_query = f"CREATE TABLE IF NOT EXISTS {dest_table} ({', '.join(cols)})"
+        logger.info(f"Schema Evolution: Creating new table '{dest_table}'")
+        execute_query_with_retry(DEST_DB, create_query)
+        return
+
     # Check if the source record has any keys not in the destination table
     for column in source_record.keys():
         if column not in existing_columns:
